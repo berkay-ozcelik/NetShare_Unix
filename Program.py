@@ -7,7 +7,8 @@ from MainForm import MainForm
 from Utils.Communicator import PipeClient
 
 def run_netshare_core():
-    os.system('.\\Binary\\NetShare_Core.exe')
+    path = os.path.join(os.getcwd(), 'Binary', 'NetShare_Core.exe')
+    os.system(path)
 
 def main():
     process = Process(target=run_netshare_core)
