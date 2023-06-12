@@ -1,6 +1,6 @@
 import json
+import socket
 
-import win32file
 
 from Entity.Command import CommandRequest, CommandResult
 
@@ -15,35 +15,25 @@ class PipeClient:
         return PipeClient.__instance
 
     def __init__(self):
-        self.pipe_name = r'\\.\pipe\NetShare'
-        self.handle = win32file.CreateFile(
-            self.pipe_name,
-            win32file.GENERIC_READ | win32file.GENERIC_WRITE,
-            0,
-            None,
-            win32file.OPEN_EXISTING,
-            0,
-            None
-        )
+        self.end_point = "127.0.0.1"
+        self.port = 545
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.end_point, self.port))
 
     def send(self, request: CommandRequest):
-        # Serialize the CommandRequest object to json
         message = json.dumps(request.__dict__)
-
         encoded_message = message.encode()
         length = len(encoded_message)
-
-        # Send the length of the message to the server
-        win32file.WriteFile(self.handle, length.to_bytes(4, byteorder='little'))
-        # Write the message to the Named Pipe
-        win32file.WriteFile(self.handle, encoded_message)
+        encoded_message = message.encode()
+        self.socket.send(length.to_bytes(4, byteorder='little'))
+        self.socket.send(encoded_message)
 
     def receive(self) -> CommandResult:
         # Read the length of the server's response from the Named Pipe
-        response_length = int.from_bytes(win32file.ReadFile(self.handle, 4)[1], byteorder='little')
+        response_length = int.from_bytes(self.socket.recv(4), byteorder='little')
 
         # Read the server's response from the Named Pipe
-        response = win32file.ReadFile(self.handle, response_length)[1].decode().strip()
+        response = self.socket.recv(response_length).decode().strip()
 
         # Deserialize the json to a CommandResult object
         response = json.loads(response)
@@ -56,4 +46,4 @@ class PipeClient:
         return self.receive()
 
     def close(self):
-        win32file.CloseHandle(self.handle)
+        self.socket.close()

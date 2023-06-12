@@ -6,7 +6,6 @@ from tkinter import ttk
 
 from BrowseFilesForm import BrowseFilesForm
 from Entity.Command import CommandRequest
-from Entity.Logic import Device
 from ManageFilesForm import ManageFilesForm
 from Utils.Communicator import PipeClient
 
