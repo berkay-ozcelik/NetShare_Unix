@@ -31,7 +31,7 @@ class ProgressForm(Observer):
 
         # Creating the label right top corner of the form
         self.lblProgress = Label(self.root, text="0%", justify="right")
-        self.lblProgress.grid(row=0, column=0, padx=7, pady=5, sticky="e")
+        self.lblProgress.grid(row=0, column=0, padx=(170,6), pady=5, sticky="w")
 
         # Creating the progress bar
         self.progress = ttk.Progressbar(self.root, orient=HORIZONTAL, length=200, mode='determinate')
@@ -39,17 +39,17 @@ class ProgressForm(Observer):
 
         # Creating the button to Cancel
         self.btnCancel = Button(self.root, text="Cancel", command=self.btnCancel_Click)
-        self.btnCancel.grid(row=2, column=0, padx=10, pady=2, sticky="w")
+        self.btnCancel.grid(row=2, column=0, padx=3, pady=2, sticky="w")
 
         # Set the button has the half width of the form
-        self.btnCancel.config(width=11)
+        self.btnCancel.config(width=7)
 
         # Creating the button to Hide
         self.btnHide = Button(self.root, text="Hide", command=self.btnHide_Click)
-        self.btnHide.grid(row=2, column=0, padx=10, pady=2, sticky="e")
+        self.btnHide.grid(row=2, column=0, padx=(110,6), pady=2, sticky="e")
 
         # Set the button has the half width of the form
-        self.btnHide.config(width=11)
+        self.btnHide.config(width=7)
 
         self.download_id = 0
         self.file_index = file_index

@@ -33,32 +33,32 @@ class BrowseFilesForm:
 
         # Creating the listbox with multicolmns. 1st column is for File name and 2nd column is for file size. 1st col has 60% width and 2nd col has 40% width
         self.lstFiles = ttk.Treeview(self.root, columns=("File", "Size"), show="headings")
-        self.lstFiles.column("File", width=120)
+        self.lstFiles.column("File", width=135)
         self.lstFiles.column("Size", width=80)
 
         self.lstFiles.heading("File", text="File")
         self.lstFiles.heading("Size", text="Size")
 
-        self.lstFiles.grid(row=3, column=0, padx=5, pady=0)
+        self.lstFiles.grid(row=3, column=0, padx=5, pady=0, sticky="w")
 
         # Allow only one item to be selected at a time
         self.lstFiles.config(selectmode="browse")
 
         # Creating the button to Download file
         self.btnDownload = Button(self.root, text="Download", command=self.btnDownload_Click)
-        self.btnDownload.grid(row=4, column=0, padx=10, pady=2, sticky="w")
+        self.btnDownload.grid(row=4, column=0, padx=7, pady=2, sticky="w")
 
         # Set the button has the half width of the form
-        self.btnDownload.config(width=11)
+        self.btnDownload.config(width=7)
 
 
 
         # Creating the button to Refresh
         self.btnRefresh = Button(self.root, text="Refresh", command=self.btnRefresh_Click)
-        self.btnRefresh.grid(row=4, column=0, padx=10, pady=2, sticky="e")
+        self.btnRefresh.grid(row=4, column=0, padx=(120,6), pady=2, sticky="w")
 
         # Set the button has the half width of the form
-        self.btnRefresh.config(width=11)
+        self.btnRefresh.config(width=7)
 
         self.btnRefresh_Click()
 
@@ -83,9 +83,15 @@ class BrowseFilesForm:
         # Clear the listbox properly
         self.lstFiles.delete(*self.lstFiles.get_children())
 
-        # Send the request to the server to get the list of files
+        request = CommandRequest("SelectDevice", str(self.deviceIndex))
+        response = PipeClient.get_instance().send_and_receive(request)
 
-        request = CommandRequest("GetSharingFiles", str(self.deviceIndex))
+        if response.Type == 1:
+            messagebox.showerror("Error", response.Message)
+            self.root.destroy()
+            return
+
+        request = CommandRequest("GetSharingFiles", "")
         response = PipeClient.get_instance().send_and_receive(request)
 
         if response.Type == 1:

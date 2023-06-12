@@ -33,29 +33,24 @@ class ManageFilesForm:
 
         self.lstFiles.heading("File", text="File")
         self.lstFiles.heading("Size", text="Size")
-        self.lstFiles.grid(row=1, column=0, padx=5, pady=0)
+        self.lstFiles.grid(row=1, column=0, padx=5, pady=0, sticky="w")
 
         # Add OnSelectedIndexChanged event to the listbox
         self.lstFiles.bind("<<TreeviewSelect>>", self.lstFiles_OnSelectedIndexChanged)
         # Allow only one item to be selected at a time
         self.lstFiles.config(selectmode="browse")
 
-        # Add dummy data to the listbox 100 times
-        for i in range(100):
-
-            self.lstFiles.insert("", "end", values=("File " + str(i), "Size " + str(i)))
-
         # Creating the button to add file
         self.btnAdd = Button(self.root, text="Add", command=self.btnAdd_Click)
         self.btnAdd.grid(row=2, column=0, padx=6, pady=2, sticky="w")
         # Set the button has the half width of the form
-        self.btnAdd.config(width=12)
+        self.btnAdd.config(width=7)
 
         # Creating the button to remove file
         self.btnRemove = Button(self.root, text="Remove", command=self.btnRemove_Click)
-        self.btnRemove.grid(row=2, column=0, padx=6, pady=2, sticky="e")
+        self.btnRemove.grid(row=2, column=0, padx=(110,6), pady=2, sticky="w")
         # Set the button has the half width of the form
-        self.btnRemove.config(width=12)
+        self.btnRemove.config(width=7)
 
         self.update_lstFiles()
 

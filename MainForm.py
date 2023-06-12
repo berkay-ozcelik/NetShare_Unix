@@ -17,9 +17,12 @@ downloadFolderPath = path = os.path.join(os.getcwd(), "Downloads")
 
 def get_download_folder_path():
     return downloadFolderPath
+
+
 def set_download_folder_path(path):
     global downloadFolderPath
     downloadFolderPath = path
+
 
 class MainForm:
     # Constructor
@@ -27,7 +30,7 @@ class MainForm:
         self.devices = None
         self.root = Tk()
         self.root.title("NetShare")
-        self.root.geometry("210x390")
+        self.root.geometry("210x380")
         self.root.resizable(False, False)
 
         # Creating the label left top corner of the form
@@ -40,43 +43,41 @@ class MainForm:
         self.lstDevices.column("Endpoint", width=120)
         self.lstDevices.heading("Device", text="Device")
         self.lstDevices.heading("Endpoint", text="Endpoint")
-        self.lstDevices.grid(row=1, column=0, padx=5, pady=0)
+        self.lstDevices.grid(row=1, column=0, padx=5, pady=0, sticky="w")
 
         # Allow only one item to be selected at a time
         self.lstDevices.config(selectmode="browse")
 
         # Creating the button to select the device
         self.btnSelect = Button(self.root, text="Select", command=self.btnSelect_Click)
-        self.btnSelect.grid(row=2, column=0, padx=6, pady=2, sticky="w")
+        self.btnSelect.grid(row=2, column=0, padx=3, pady=2, sticky="w")
         # Set the button has the half width of the form
-        self.btnSelect.config(width=12)
+        self.btnSelect.config(width=7)
 
         # Creating the button to refresh the list of devices
         self.btnRefresh = Button(self.root, text="Refresh", command=self.search_devices)
-        self.btnRefresh.grid(row=2, column=0, padx=6, pady=2, sticky="e")
+        self.btnRefresh.grid(row=2, column=0, padx=(110, 6), pady=2, sticky="w")
         # Set the button has the half width of the form
-        self.btnRefresh.config(width=12)
+        self.btnRefresh.config(width=7)
 
         # Add Manage Sharing Files button to the 3rd row
         self.btnManageSharingFiles = Button(self.root, text="Manage Sharing Files",
                                             command=self.btnManageSharingFiles_Click)
-        self.btnManageSharingFiles.grid(row=3, column=0, padx=5, pady=2)
+        self.btnManageSharingFiles.grid(row=3, column=0, padx=3, pady=2, sticky="w")
         # Set the button has the full width of the form
-        self.btnManageSharingFiles.config(width=27)
+        self.btnManageSharingFiles.config(width=19)
 
         # Add Set Download Folder button to the 4th row
         self.btnSetDownloadFolder = Button(self.root, text="Set Download Folder",
                                            command=self.btnSetDownloadFolder_Click)
-        self.btnSetDownloadFolder.grid(row=4, column=0, padx=5, pady=2)
+        self.btnSetDownloadFolder.grid(row=4, column=0, padx=3, pady=2, sticky="w")
         # Set the button has the full width of the form
-        self.btnSetDownloadFolder.config(width=27)
-
-
+        self.btnSetDownloadFolder.config(width=19)
 
         self.btnAbout = Button(self.root, text="About", command=self.btnAbout_Click)
-        self.btnAbout.grid(row=5, column=0, padx=5, pady=2)
+        self.btnAbout.grid(row=5, column=0, padx=3, pady=2,sticky="w")
         # Set the button has the full width of the form
-        self.btnAbout.config(width=27)
+        self.btnAbout.config(width=19)
 
         self.root.mainloop()
 
@@ -117,8 +118,6 @@ class MainForm:
         request = CommandRequest("DiscoverDevices", "")
 
         response = PipeClient.get_instance().send_and_receive(request)
-
-
 
         if response.Type == 1:
             # Show error dialog
