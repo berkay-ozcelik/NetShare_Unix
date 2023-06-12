@@ -71,13 +71,20 @@ class BrowseFilesForm:
             messagebox.showerror("Error", "Please select a file to download.")
             return
 
-        index = self.lstFiles.index(self.lstFiles.selection()[0])
+        file_index = self.lstFiles.index(self.lstFiles.selection()[0])
+
+        request = CommandRequest("SelectFile", str(file_index))
+        response = PipeClient.get_instance().send_and_receive(request)
+
+        if response.Type == 1:
+            messagebox.showerror("Error", response.Message)
+            return
 
         file_name = self.lstFiles.item(self.lstFiles.selection()[0])["values"][0]
         # Allow max file name length of 20 characters, select the last 20 characters and add "..." to the end
 
 
-        ProgressForm(file_name,index)
+        ProgressForm(file_name,file_index)
 
     def btnRefresh_Click(self):
         # Clear the listbox properly
